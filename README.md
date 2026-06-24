@@ -1,4 +1,4 @@
-# Desify. - 9:16 Mobile to 16:9 Desktop Wallpaper Converter
+# Desify.
 
 A lightweight, lightning-fast web utility that instantly converts vertical mobile wallpapers into widescreen desktop backgrounds. It operates 100% in the browser with zero server latency, zero AI costs, and absolute user privacy.
 
