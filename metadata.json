@@ -1,0 +1,6 @@
+{
+  "name": "Wallpaper Converter",
+  "description": "Convert vertical mobile wallpapers into high-resolution widescreen desktop backgrounds instantly and privately.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
