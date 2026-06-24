@@ -70,6 +70,7 @@ export default function App() {
   const [shadowBlur, setShadowBlur] = useState<number>(30);
   const [shadowOpacity, setShadowOpacity] = useState<number>(40);
   const [vignetteOpacity, setVignetteOpacity] = useState<number>(20);
+  const [rotation, setRotation] = useState<number>(0);
   
   // Gradient specific states
   const [gradientType, setGradientType] = useState<GradientType>('linear');
@@ -249,6 +250,7 @@ export default function App() {
         setShadowBlur(20);
         setShadowOpacity(30);
         setVignetteOpacity(10);
+        setRotation(0);
         break;
       case 'ultra-clean':
         setBlurRadius(0);
@@ -258,6 +260,7 @@ export default function App() {
         setShadowBlur(45);
         setShadowOpacity(35);
         setVignetteOpacity(0);
+        setRotation(0);
         setLayoutMode('gradient');
         setGradientType('linear');
         setGradientAngle(135);
@@ -270,6 +273,7 @@ export default function App() {
         setShadowBlur(35);
         setShadowOpacity(50);
         setVignetteOpacity(40);
+        setRotation(0);
         setLayoutMode('blur');
         break;
       case 'cinematic':
@@ -280,6 +284,7 @@ export default function App() {
         setShadowBlur(30);
         setShadowOpacity(45);
         setVignetteOpacity(30);
+        setRotation(0);
         setLayoutMode('blur');
         break;
     }
@@ -436,11 +441,19 @@ export default function App() {
         const fgH = targetHeight * (foregroundScale / 100);
         const fgW = fgH * imgAspect;
         
-        // Coordinates to center the foreground card
-        const fgX = (targetWidth - fgW) / 2;
-        const fgY = (targetHeight - fgH) / 2;
-
         ctx.save();
+
+        // Translate and rotate around the center of the canvas
+        ctx.translate(targetWidth / 2, targetHeight / 2);
+        if (rotation !== 0) {
+          ctx.rotate((rotation * Math.PI) / 180);
+        }
+
+        // Define local drawing coordinates relative to translated origin (0, 0)
+        const halfW = fgW / 2;
+        const halfH = fgH / 2;
+        const localX = -halfW;
+        const localY = -halfH;
 
         // Standard drop shadow configuration (draw shadow underneath first)
         if (shadowOpacity > 0 && shadowBlur > 0) {
@@ -455,10 +468,10 @@ export default function App() {
         
         ctx.beginPath();
         if (typeof (ctx as any).roundRect === 'function') {
-          (ctx as any).roundRect(fgX, fgY, fgW, fgH, scaledRadius);
+          (ctx as any).roundRect(localX, localY, fgW, fgH, scaledRadius);
         } else {
           // Manual fallback if roundRect is not supported
-          ctx.rect(fgX, fgY, fgW, fgH);
+          ctx.rect(localX, localY, fgW, fgH);
         }
         
         // Fill first to cast the shadow perfectly
@@ -473,7 +486,7 @@ export default function App() {
 
         // Clip the image draw inside the exact same rounded bounds
         ctx.clip();
-        ctx.drawImage(imageElement, fgX, fgY, fgW, fgH);
+        ctx.drawImage(imageElement, localX, localY, fgW, fgH);
         
         ctx.restore();
 
@@ -997,6 +1010,24 @@ export default function App() {
                 />
               </div>
 
+              {/* Foreground Rotation */}
+              <div className="flex flex-col gap-1.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-semibold text-slate-300">Foreground Rotation</span>
+                  <span className="text-xs font-mono font-bold text-[#00FF66] bg-[#00FF66]/10 px-2 py-0.5 rounded border border-[#00FF66]/20">
+                    {rotation}°
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="360"
+                  value={rotation}
+                  onChange={(e) => setRotation(parseInt(e.target.value))}
+                  className="w-full cursor-ew-resize h-1.5 bg-white/10 rounded-lg appearance-none"
+                />
+              </div>
+
             </div>
           </section>
 
@@ -1112,7 +1143,8 @@ export default function App() {
                         style={{
                           height: `${foregroundScale}%`,
                           aspectRatio: imageElement.naturalWidth / imageElement.naturalHeight,
-                          maxHeight: '100%'
+                          maxHeight: '100%',
+                          transform: `rotate(${rotation}deg)`
                         }}
                       >
                         <img 
