@@ -508,27 +508,12 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans antialiased pb-16 selection:bg-[#00FF66]/30 selection:text-white">
       
-      {/* 100% Client-Side Privacy Toast / Banner */}
-      <div className="bg-[#0c0c0c] text-slate-400 py-3 px-4 text-xs font-mono text-center flex items-center justify-center gap-2 shadow-sm border-b border-white/10 uppercase tracking-wider">
-        <ShieldCheck className="h-4 w-4 text-[#00FF66]" />
-        <span>Absolute Local Privacy Guarantee: All image scaling and blurs are done 100% in your browser. No files are ever sent to a server.</span>
-      </div>
-
       {/* Main Header */}
       <header className="max-w-7xl mx-auto px-6 pt-12 pb-6 flex flex-col sm:flex-row items-baseline justify-between gap-6 border-b border-white/10">
         <div>
           <h1 className="text-6xl md:text-7xl font-black tracking-tighter leading-none m-0 uppercase font-display text-white">
-            SIDEWAYS<span className="text-[#00FF66]">.</span>
+            DESIFY<span className="text-[#00FF66]">.</span>
           </h1>
-          <p className="text-xs font-mono uppercase tracking-[0.3em] mt-2 opacity-60 text-[#00FF66]">
-            9:16 Mobile to 16:9 Desktop Converter
-          </p>
-        </div>
-        
-        <div className="text-right font-mono text-[10px] space-y-1 opacity-40">
-          <p>ENGINE: HTML5 CANVAS V2.4</p>
-          <p>STATUS: CLIENT-SIDE READY</p>
-          <p>PRIVACY: 100% LOCAL</p>
         </div>
       </header>
 
